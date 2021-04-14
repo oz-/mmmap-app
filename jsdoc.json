@@ -1,0 +1,33 @@
+{
+  "opts": {
+    "template": "/Users/benoitlahoz/Documents/Dev/__oz/JS-doc/mmmap-template",
+    "encoding": "utf8",
+    "destination": "./doc",
+    "access": "all",
+    "private": true,
+    "readme": "./src/README.md",
+    "verbose": true
+  },
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": false,
+    "search": true
+  },
+  "recurseDepth": 10,
+  "tags": {
+    "allowUnknownTags": true
+  },
+  "plugins": [
+    "plugins/markdown"
+  ],
+  "source": {
+    "include": [
+      "./src/core",
+      "./src/gui",
+      "./src/shared",
+      "./src/libs",
+      "./src/types"
+    ],
+    "includePattern": "\\.(jsx|js|ts|tsx)$"
+  }
+}

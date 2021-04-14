@@ -10,12 +10,14 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "suppressImplicitAnyIndexErrors": true,
     "sourceMap": true,
     "baseUrl": ".",
     "types": [
       "webpack-env"
     ],
     "paths": {
+      // Aliases for TS globally
       "@/*": [
         "src/*"
       ]
@@ -33,7 +35,7 @@
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx"
-  ],
+, "src/core/connectivity/worker.js", "src/core/connectivity/worker.js"  ],
   "exclude": [
     "node_modules"
   ]

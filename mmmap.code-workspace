@@ -1,0 +1,27 @@
+{
+	"folders": [
+		{
+			"name": "mmmap",
+			"path": "."
+		},
+		{
+			"name": "components",
+			"path": "../@vuoz/components"
+		},
+		{
+			"name": "theme-api",
+			"path": "../@vuoz/theme-api"
+		},
+		{
+			"name": "theme-core-default",
+			"path": "../@vuoz/theme-core-default"
+		},
+		{
+			"path": "../initial_mmmap"
+		},
+		{
+			"path": "../@mobiusz/patcher-app"
+		}
+	],
+	"settings": {}
+}
