@@ -1,4 +1,4 @@
-import { MobiuszDevice } from "@/libs/signal/class";
+import { MobiuszDevice } from "@/libs/signal/classes";
 
 
 

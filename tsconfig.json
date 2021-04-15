@@ -34,8 +34,10 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "tests/**/*.ts",
-    "tests/**/*.tsx"
-, "src/core/connectivity/worker.js", "src/core/connectivity/worker.js"  ],
+    "tests/**/*.tsx",
+    "src/core/connectivity/worker.js",
+    "src/core/connectivity/worker.js"
+  ],
   "exclude": [
     "node_modules"
   ]

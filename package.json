@@ -1,6 +1,6 @@
 {
   "name": "@mmmap/app",
-  "version": "0.5.0-alpha.162",
+  "version": "0.5.0-alpha.198",
   "private": true,
   "description": "The mmmap application, to connect to the MARCEL multimedia art platform.",
   "author": "Benoît LAHOZ <benoit.lahoz@carasuelo.org>",
@@ -27,6 +27,7 @@
     "electron-updater": "^4.3.8",
     "get-port": "^5.1.1",
     "is-online": "^9.0.0",
+    "osc": "^2.4.1",
     "threads": "^1.6.3",
     "uuid": "^8.3.2",
     "vue": "^2.6.11",

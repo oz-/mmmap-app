@@ -1,4 +1,4 @@
-import { MobiuszDevice, MobiuszVideoDevice, MobiuszAudioDevice } from "@/libs/signal"
+import { MobiuszDevice, MobiuszVideoDevice, MobiuszAudioDevice, MobiuszOSCDevice, MobiuszMIDIDevice, MobiuszSerialDevice } from "@/libs/signal"
 import { SocketMessages } from "@/shared"
 import { AppManager } from "../manager"
 
@@ -50,6 +50,48 @@ const onGotDevices = (devices: any) => {
       }
     }
   }
+  // TODO
+  // Creates MobisuzOSCDevice instance for inputs and outputs
+  DEVICES.push(new MobiuszOSCDevice('input', {
+    deviceId: 'Fake Client',
+    label: 'OSC Client (Fake)',
+    kind: 'oscinput',
+    groupId: ''
+  })) 
+  DEVICES.push(new MobiuszOSCDevice('output', {
+    deviceId: 'Fake Server',
+    label: 'OSC Server (Fake)',
+    kind: 'oscoutput',
+    groupId: ''
+  })) 
+  // TODO
+  // Creates MobisuzMIDIDevice instance for inputs and outputs
+  DEVICES.push(new MobiuszMIDIDevice('input', {
+    deviceId: 'Fake Client',
+    label: 'MIDI Client (Fake)',
+    kind: 'midiinput',
+    groupId: ''
+  })) 
+  DEVICES.push(new MobiuszMIDIDevice('output', {
+    deviceId: 'Fake Server',
+    label: 'MIDI Server (Fake)',
+    kind: 'midioutput',
+    groupId: ''
+  })) 
+  // TODO
+  // Creates MobisuzSerialDevice instance for inputs and outputs
+  DEVICES.push(new MobiuszSerialDevice('input', {
+    deviceId: 'Fake Client',
+    label: 'Serial Client (Fake)',
+    kind: 'serialinput',
+    groupId: ''
+  })) 
+  DEVICES.push(new MobiuszSerialDevice('output', {
+    deviceId: 'Fake Server',
+    label: 'Serial Server (Fake)',
+    kind: 'serialoutput',
+    groupId: ''
+  })) 
 }
 
 /**

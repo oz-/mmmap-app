@@ -2,7 +2,7 @@
  * Copyright (c) 2017-2021 Benoît Lahoz.
  */
 
-import window from './window'
+import window from '../windows'
 import handlers from './handlers'
 
 const MODULE_NAME = 'App'
