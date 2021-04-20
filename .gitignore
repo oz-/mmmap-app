@@ -25,5 +25,6 @@ pnpm-debug.log*
 #Electron-builder output
 /dist_electron
 
-# Local tools
+# Local tools and files
 update.build.js
+RESOURCES.md
