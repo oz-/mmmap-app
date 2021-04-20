@@ -1,7 +1,7 @@
 // see here for asarUnpack package.json option: https://threads.js.org/getting-started
 import { spawn, Thread, Worker } from "threads"
 import { WorkerMessages } from '@/shared'
-import { AppManager } from "../manager"
+import { AppManager } from "@/core/app/manager"
 
 
 

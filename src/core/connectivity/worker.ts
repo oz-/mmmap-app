@@ -3,7 +3,7 @@ import isOnline from 'is-online'
 import { expose } from "threads/worker"
 
 import { WorkerMessages } from '@/shared'
-import { AppManager } from '../manager'
+import { AppManager } from '@/core/app/manager'
 
 let interval: any
 

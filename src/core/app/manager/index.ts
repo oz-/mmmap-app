@@ -5,7 +5,7 @@
 import { protocol } from 'electron'
 
 import { AppInitError } from '@/core/errors'
-import { Core } from '../types'
+import { Core } from '@/core/types'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 

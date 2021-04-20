@@ -2,7 +2,7 @@
  * Copyright (c) 2017-2021 Benoît Lahoz.
  */
 
-import { AppManager } from './manager'
+import { AppManager } from '@/core/app/manager'
 
 import Ipc from './ipc'
 // TODO, see: https://github.com/andywer/threads-plugin/issues/39

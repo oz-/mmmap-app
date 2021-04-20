@@ -6,7 +6,7 @@ import { App } from '../types'
 import { WindowMessages } from '@/shared'
 
 import powerSaver from '../power'
-import { AppManager } from '@/core/manager'
+import { AppManager } from '@/core/app/manager'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -25,6 +25,9 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
  * Initializes power monitor and setup listeners on 'app'.
  */
 const init = () => {
+
+  // Configures app
+  // app.allowRendererProcessReuse = false
 
   // Setups the power saver behavior.
   powerSaver.init()

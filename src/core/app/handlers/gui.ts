@@ -1,6 +1,6 @@
 import { SocketMessages, WindowMessages } from '@/shared'
 import { MobiuszStore } from '@/libs/store'
-import { AppManager } from '@/core/manager'
+import { AppManager } from '@/core/app/manager'
 
 
 

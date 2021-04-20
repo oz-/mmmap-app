@@ -8,7 +8,6 @@ import getPort from 'get-port'
 import { IpcMessages } from '@/shared'
 import socket from './socket'
 import { SocketServer } from '@/libs/socket'
-import { AppManager } from '../manager'
 
 const MODULE_NAME = 'Ipc'
 
