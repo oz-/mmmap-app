@@ -2,7 +2,7 @@
  * Copyright (c) 2017-2021 Benoît Lahoz.
  */
 
-import { AppManager } from "@/core/manager"
+import { AppManager } from "@/core/app/manager"
 
 import { SocketMessages, WindowMessages } from "@/shared"
 

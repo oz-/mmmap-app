@@ -1,7 +1,7 @@
 import { app } from 'electron'
 import { SocketMessages } from '@/shared'
 import { autoUpdater } from 'electron-updater'
-import { AppManager } from '../manager'
+import { AppManager } from '@/core/app/manager'
 import { UpdaterError } from '../errors'
 
 

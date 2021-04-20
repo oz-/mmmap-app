@@ -1,7 +1,7 @@
 import path from 'path'
 import fs from 'fs'
 
-import { AppManager } from '@/core/manager'
+import { AppManager } from '@/core/app/manager'
 import { SocketMessages } from '@/shared'
 
 // Default theme

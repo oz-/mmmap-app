@@ -1,6 +1,6 @@
 import { app, screen } from 'electron'
 
-import { AppManager } from '@/core/manager'
+import { AppManager } from '@/core/app/manager'
 import { WindowWrapper } from '@/libs/window'
 import { SocketMessages, WindowMessages } from '@/shared'
 
@@ -8,7 +8,7 @@ import options from './config'
 import menu from './menu'
 import { role } from './role'
 import { WindowsEvent } from '@/libs/window/types'
-import { MobiuszDevice } from '@/libs/signal/classes/device'
+import { MobiuszDevice } from '@/libs/signal/devices/device'
 
 
 

@@ -1,7 +1,7 @@
-const { gui, electronBuilder } = require('./config')
+const { vue, electronBuilder } = require('./config')
 
 const config = {
-  ...gui,
+  ...vue,
   pluginOptions: {
     ...electronBuilder
   }

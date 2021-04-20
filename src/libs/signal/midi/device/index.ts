@@ -1,4 +1,6 @@
-import { MobiuszDevice } from "@/libs/signal/classes";
+import { MobiuszDevice } from "@/libs/signal/devices";
+import { Device } from "@/libs/signal/devices/types";
+import { MobiuszMIDIHandler } from "../handler";
 
 
 
@@ -8,14 +10,9 @@ export class MobiuszMIDIDevice extends MobiuszDevice {
 
   static signal = 'MIDI'
 
-  constructor(type: 'input' | 'output', description: {
-    deviceId: string,
-    kind: string,
-    label: string,
-    groupId: string
-  }) {
+  constructor(handler: MobiuszMIDIHandler, type: Device.Type, description: Device.Description) {
 
-    super(type, description)
+    super(handler, type, description)
 
   }
 

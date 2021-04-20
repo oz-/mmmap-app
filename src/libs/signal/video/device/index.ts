@@ -1,4 +1,6 @@
-import { MobiuszDevice } from "@/libs/signal/classes";
+import { MobiuszDevice } from "@/libs/signal/devices";
+import { Device } from "@/libs/signal/devices/types";
+import { MobiuszVideoHandler } from "../handler";
 
 
 
@@ -8,14 +10,9 @@ export class MobiuszVideoDevice extends MobiuszDevice {
 
   static signal = 'Video'
 
-  constructor(description: {
-    deviceId: string,
-    kind: string,
-    label: string,
-    groupId: string
-  }) {
+  constructor(handler: MobiuszVideoHandler, type: Device.Type, description: Device.Description) {
 
-    super('input', description)
+    super(handler, type, description)
 
   }
 

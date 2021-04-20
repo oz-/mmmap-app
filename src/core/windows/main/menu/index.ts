@@ -1,4 +1,4 @@
-import { AppManager } from '@/core/manager'
+import { AppManager } from '@/core/app/manager'
 import { WindowMessages } from '@/shared'
 import { app, Menu, MenuItem } from 'electron'
 

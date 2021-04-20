@@ -1,4 +1,4 @@
-import { AppManager } from '@/core/manager'
+import { AppManager } from '@/core/app/manager'
 import { WindowWrapper } from '@/libs/window'
 import { SocketMessages, WindowMessages } from '@/shared'
 

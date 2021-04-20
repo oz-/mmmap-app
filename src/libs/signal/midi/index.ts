@@ -3,5 +3,5 @@
 
 
 
-export { MobiuszMIDIManager } from './manager'
+export { MobiuszMIDIHandler } from './handler'
 export { MobiuszMIDIDevice} from './device'

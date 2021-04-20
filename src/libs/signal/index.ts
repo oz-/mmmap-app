@@ -1,11 +1,15 @@
 
 
 
+export { MobiuszSignalManager } from './main'
 
-export { MobiuszVideoDevice } from './video/device'
-export { MobiuszAudioDevice } from './audio/device'
-export { MobiuszOSCDevice } from './osc/device'
-export { MobiuszMIDIDevice } from './midi/device'
-export { MobiuszSerialDevice } from './serial/device'
+export { MobiuszVideoHandler, MobiuszVideoDevice } from './video'
+export { MobiuszAudioHandler, MobiuszAudioDevice } from './audio'
+export { MobiuszOSCHandler, MobiuszOSCDevice } from './osc'
+export { MobiuszMIDIHandler, MobiuszMIDIDevice } from './midi'
+export { MobiuszSerialHandler, MobiuszSerialDevice } from './serial'
 
-export { MobiuszDevice } from './classes/device'
+export { MobiuszDeviceHandler, MobiuszDevice } from './devices/'
+
+export { Device } from './devices/types'
+export { Signal } from './shared'

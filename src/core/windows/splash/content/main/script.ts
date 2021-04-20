@@ -150,7 +150,7 @@ export default class SplashPage extends Mixins(Vue, VuozRTCDevicesMixin) {
     this.$app.send(SocketMessages.GOT_RTC_DEVICES, devices)
     this.logger.push({
       date: new Date(),
-      content: `Found ${devices.length} audio/video devices.`
+      content: `Found ${devices.length} devices via HTML5.`
     })
     this._devicesDone = true
     if (this.checkTasks()) {

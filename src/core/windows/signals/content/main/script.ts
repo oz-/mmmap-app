@@ -5,15 +5,7 @@ import { SocketMessages, WindowMessages } from '@/shared'
 import { VuozTitleBar, VuozTable, VuozTableRow, VuozPreferencesItem } from '@vuoz/components'
 import { VueConstructor } from 'vue/types/umd'
 
-import { VuozPreferencesAudioPanel, VuozPreferencesVideoPanel, VuozPreferencesOSCPanel, VuozPreferencesMIDIPanel, VuozPreferencesSerialPanel } from '../panels'
-
-const icons = {
-  Audio: 'volume_up',
-  Video: 'tv',
-  OSC: 'sensors',
-  MIDI: 'grid_view',
-  Serial: 'settings_ethernet'
-}
+import { VuozPreferencesAudioPanel } from '@/libs/signal/vue'
 
 /**
  * Splash window content.
@@ -26,8 +18,7 @@ const icons = {
     VuozTitleBar,
     VuozTable,
     VuozTableRow,
-    VuozPreferencesAudioPanel,
-    VuozPreferencesVideoPanel
+    VuozPreferencesAudioPanel
   },
   metaInfo() {
     return {
@@ -37,7 +28,7 @@ const icons = {
 })
 export default class SignalsPage extends Vue {
 
-  private devices: {
+  private rows: {
     component: VueConstructor;
     name: string;
     props: {
@@ -47,15 +38,15 @@ export default class SignalsPage extends Vue {
     objects: any[];
   }[] = []
 
-  private component: VueConstructor = VuozPreferencesAudioPanel
-
+  public component: any = () => import('@/libs/signal/audio/components/settings/index.vue')
   private selected: {
     input?: any[];
     output?: any[]
   } = {}
 
-  public mounted(): void {
+  public created(): void {
     // Listens to window load event
+    // @see also: @hook:mounted="onLoaded"
     window.addEventListener('load', this.onLoaded)
   }
 
@@ -64,86 +55,50 @@ export default class SignalsPage extends Vue {
     window.removeEventListener('load', this.onLoaded)
     // Asks for devices
     this.$app.send(SocketMessages.GET_DEVICES, 'all', (devices: any) => {
-      // Organize in categories
-      for (const key in devices.payload) {
+      // Organize by signal category (audio, video, ...)
+      devices.payload.forEach((device: any) => {
+        // Object for tab description
         const description: any = {
           component: VuozPreferencesItem,
-          name: `devices.${key.toLowerCase()}`,
+          name: `category.${device.gui.globalName.toLowerCase()}`,
           props: {
-            title: key,
-            icon: icons[key]
+            title: device.gui.globalName,
+            icon: device.gui.settings.icon
           },
-          objects: devices.payload[key]
+          // Actual devices description.
+          objects: device.devices
         }
-        this.devices.push(description)
-      }
+        this.rows.push(description)
+      })
+      // Sends message to main process
+      this.$app.send(WindowMessages.LOADED, this.$route.name)
     })
-    // Sends message to main process
-    this.$app.send(WindowMessages.LOADED, this.$route.name)
   }
 
   public onSelect(payload: any) {
-    this.selected = this.devices[payload.row].objects as any
+    this.selected = this.rows[payload.row].objects as any
     switch (payload.item.name) {
-      case 'device.audio': {
-        this.component = VuozPreferencesAudioPanel
+      case 'category.audio': {
+        this.component = () => import('@/libs/signal/audio/components/settings/index.vue')
         break
       }
-      case 'device.video': {
-        this.component = VuozPreferencesVideoPanel
+      case 'category.video': {
+        this.component = () => import('@/libs/signal/video/components/settings/index.vue')
         break
       }
-      case 'device.osc': {
-        this.component = VuozPreferencesOSCPanel
+      case 'category.osc': {
+        this.component = () => import('@/libs/signal/osc/components/settings/index.vue')
         break
       }
-      case 'device.midi': {
-        this.component = VuozPreferencesMIDIPanel
+      case 'category.midi': {
+        this.component = () => import('@/libs/signal/midi/components/settings/index.vue')
         break
       }
-      case 'device.serial': {
-        this.component = VuozPreferencesSerialPanel
+      case 'category.serial': {
+        this.component = () => import('@/libs/signal/serial/components/settings/index.vue')
         break
       }
     }
   }
 
 }
-
-
-  /*
-  = [
-    {
-      component: VuozPreferencesItem,
-      name: 'devices.video',
-      props: {
-        title: 'Video',
-        icon: 'tv'
-      }
-    },
-    {
-      component: VuozPreferencesItem,
-      name: 'devices.audio',
-      props: {
-        title: 'Audio',
-        icon: 'volume_up'
-      }
-    },
-    {
-      component: VuozPreferencesItem,
-      name: 'signals.osc',
-      props: {
-        title: 'OSC',
-        icon: 'sensors'
-      }
-    },
-    {
-      component: VuozPreferencesItem,
-      name: 'signals.midi',
-      props: {
-        title: 'MIDI',
-        icon: 'videogame_asset'
-      }
-    }
-  ]
-*/

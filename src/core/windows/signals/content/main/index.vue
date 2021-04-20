@@ -3,13 +3,13 @@
   vuoz-title-bar(title="Signals", size="small", border="medium-grey")
   .flex-grow.is-flex
     vuoz-table(
-      :items="devices",
+      :items="rows",
       selectable="one",
       size="small-thin",
       border="dark-grey",
       highlight="dark-grey",
       style="width: 33%; min-width: 33%; max-width: 33%; height: 100%;",
-      @row="onSelect"
+      @row="onSelect",
     ).has-border-right-medium-grey
       template(slot="rows", slot-scope="props")
         vuoz-table-row(
@@ -21,7 +21,8 @@
           :selected="props.selected",
           :highlight="props.highlight"
         )
-    component(:is="component", :items="selected")
+    keep-alive
+      component(v-if="component", :is="component", :items="selected")
 </template>
 <script lang="ts">
 export { default } from "./script";
