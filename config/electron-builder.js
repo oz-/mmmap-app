@@ -42,7 +42,10 @@ module.exports = {
       },
       win: {
         publish: 'github'
-      }
+      },
+      // TODO: see: https://github.com/nklayman/vue-cli-plugin-electron-builder/issues/1295
+      npmRebuild: false,
+      nodeGypRebuild: false
     },
     // Security configuration
     ...security,
@@ -69,12 +72,12 @@ module.exports = {
       config.plugin('threads').use(new ThreadsPlugin())
 
       config.resolve.alias
-      .set('Themes', path.resolve(__dirname, "../src/themes"))
+        .set('Themes', path.resolve(__dirname, "../src/themes"))
     },
     chainWebpackRendererProcess: (config) => {
       config.entry('electron-preload')
-      .add('./src/core/ipc/preload/index.ts')
-      .end()
+        .add('./src/core/ipc/preload/index.ts')
+        .end()
       /*
       config.plugin('threads').use(new ThreadsPlugin(), [(value) => {
         console.error('YOOO THREADS IN RENDERER')
@@ -84,5 +87,9 @@ module.exports = {
     },
     // Bridge between engine and GUI for the first handshake via Electron's Ipc modules
     preload: 'src/core/ipc/preload/index.ts',
+    // TODO: see: https://github.com/nklayman/vue-cli-plugin-electron-builder/issues/1295
+    // also: https://stackoverflow.com/a/59313474/1060921
+    externals: ['serialport', 'midi'],
+    nodeModulesPath: ['../../node_modules', './node_modules']
   }
 }

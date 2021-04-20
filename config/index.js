@@ -1,5 +1,5 @@
 
 module.exports = {
-  gui: require('./gui'),
+  vue: require('./vue'),
   electronBuilder: require('./electron-builder')
 }
