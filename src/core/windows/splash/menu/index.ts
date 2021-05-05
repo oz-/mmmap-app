@@ -1,4 +1,4 @@
-import { Menu } from 'electron'
+import { app, Menu } from 'electron'
 
 let menu: Menu | null
 
@@ -6,6 +6,12 @@ const init = () => {
 
   // No menu for splash window.
   const template: any = [
+    {
+      label: app.name,
+      submenu: [
+        { role: 'quit' }
+      ]
+    },
     {
       label: 'Developper',
       submenu: [

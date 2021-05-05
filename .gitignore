@@ -28,3 +28,4 @@ pnpm-debug.log*
 # Local tools and files
 update.build.js
 RESOURCES.md
+/backup

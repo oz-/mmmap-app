@@ -5,6 +5,8 @@
     vuoz-table(
       :items="rows",
       selectable="one",
+      :unselectable="false",
+      :initial="0",
       size="small-thin",
       border="dark-grey",
       highlight="dark-grey",

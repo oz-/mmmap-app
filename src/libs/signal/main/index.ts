@@ -2,7 +2,7 @@
 import { AppManager } from '@/core/app/manager'
 // Devices handlers
 import { MobiuszAudioHandler } from "../audio";
-import { Device } from "../devices/types";
+import { Device } from "./devices/types";
 import { MobiuszMIDIHandler } from "../midi";
 import { MobiuszOSCHandler } from "../osc";
 import { MobiuszSerialHandler } from "../serial";

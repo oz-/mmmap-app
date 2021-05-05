@@ -4,16 +4,19 @@
 
 import { AppManager } from '@/core/app/manager'
 
+
 import Ipc from './ipc'
 // TODO, see: https://github.com/andywer/threads-plugin/issues/39
 // import Connectivity from './connectivity'
-import App from './app'
-import Signal from './signal'
+import App from '@/core/app'
+import Server from '@/core/server'
+import Signal from '@/core/signal'
 
 AppManager.addModules([
   // Order matters
   Ipc,
   App,
+  Server,
   // TODO: Connectivity
   Signal
 ])

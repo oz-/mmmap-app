@@ -1,5 +1,5 @@
 import { MobiuszSignalManager } from "@/libs/signal"
-import { SocketMessages } from "@/shared"
+import { M } from "@/shared"
 import { AppManager } from "@/core/app/manager"
 import { Device, Signal } from "@/libs/signal/"
 
@@ -22,19 +22,19 @@ const init = () => {
   manager = new MobiuszSignalManager(AppManager)
 
   // Listens to Renderer loading WebRTC devices (once)
-  AppManager.on(SocketMessages.GOT_RTC_DEVICES, onGotRTCDevices)
+  AppManager.on(Signal.Event.GUI.PARSE_DEVICES, onGUIDevices)
 
   // Listens to any object (except Renderer process) asking for devices
-  AppManager.on(SocketMessages.GET_DEVICES, onAskDevicesObjects)
+  AppManager.on(M.Signal.GET_DEVICES, onAskDevicesObjects)
   // Listens to objects asking for device's info
-  AppManager.on(SocketMessages.GET_DEVICES_INFO, onAskDevicesInfo)
+  AppManager.on(M.Signal.GET_DEVICES_INFO, onAskDevicesInfo)
 
 }
 
 const unref = () => {
   // Just to be sure: AppManager must have removed the listeners at this time.
-  AppManager.off(SocketMessages.GET_DEVICES, onAskDevicesObjects)
-  AppManager.off(SocketMessages.GET_DEVICES_INFO, onAskDevicesInfo)
+  AppManager.off(M.Signal.GET_DEVICES, onAskDevicesObjects)
+  AppManager.off(M.Signal.GET_DEVICES_INFO, onAskDevicesInfo)
 }
 
 /**
@@ -43,9 +43,9 @@ const unref = () => {
  * @param {Device.Description} devices A list of WebRTC devices sent by the renderer process.
  * @callback
  */
-const onGotRTCDevices = (devices: Device.Description[]) => {
+const onGUIDevices = (devices: Device.Description[]) => {
   // Stops listener.
-  AppManager.off(SocketMessages.GOT_RTC_DEVICES, onGotRTCDevices)
+  AppManager.off(Signal.Event.GUI.PARSE_DEVICES, onGUIDevices)
   // Adds devices to manager that will create appropriate handlers.
   manager.addDevices(devices)
 }

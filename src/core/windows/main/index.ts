@@ -1,18 +1,18 @@
 import { app, screen } from 'electron'
 
 import { AppManager } from '@/core/app/manager'
-import { WindowWrapper } from '@/libs/window'
-import { SocketMessages, WindowMessages } from '@/shared'
+import { MobiuszWindow } from '@/libs/window'
+import { M } from '@/shared'
 
 import options from './config'
 import menu from './menu'
 import { role } from './role'
 import { WindowsEvent } from '@/libs/window/types'
-import { MobiuszDevice } from '@/libs/signal/devices/device'
+import { MobiuszDevice } from '@/libs/signal/main/devices/device'
 
 
 
-export class MainWindow extends WindowWrapper {
+export class MainWindow extends MobiuszWindow {
 
   public static role = role
 
@@ -23,12 +23,13 @@ export class MainWindow extends WindowWrapper {
     this.onWindowLoaded = this.onWindowLoaded.bind(this)
 
     // Listens fo full load of window
-    AppManager.on(WindowMessages.LOADED, this.onWindowLoaded)
+    this._win!.webContents.once(WindowsEvent.DOM_READY, this.onWindowLoaded)
 
     // Listens to 'closed' event
     this._win!.on(WindowsEvent.CLOSED, this.onWindowClosed)
 
-    AppManager.emit(SocketMessages.GET_DEVICES, 'all', (devices: MobiuszDevice[]) => {
+    // TODO: pass in Signal lib
+    AppManager.emit(M.Signal.GET_DEVICES, 'all', (devices: MobiuszDevice[]) => {
       // console.log('TO BUILD MENU IN main WINDOW', devices)
       // Creates menu
       // TODO: put devices in menu
@@ -42,10 +43,9 @@ export class MainWindow extends WindowWrapper {
     menu.unref()
   }
 
-  private onWindowLoaded(role: string) {
-
+  private onWindowLoaded(event: Event) {
     // Removes listener
-    AppManager.off(WindowMessages.LOADED, this.onWindowLoaded)
+    this._win!.webContents.off(M.Window.LOADED, this.onWindowLoaded)
 
     // Sets main window bounds
     this._win!.setBounds({

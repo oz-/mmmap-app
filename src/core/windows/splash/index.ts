@@ -1,6 +1,8 @@
+import { systemPreferences } from 'electron'
+
 import { AppManager } from '@/core/app/manager'
-import { WindowWrapper } from '@/libs/window'
-import { SocketMessages, WindowMessages } from '@/shared'
+import { MobiuszWindow } from '@/libs/window'
+import { M } from '@/shared'
 
 import Updater from '@/core/updater'
 
@@ -11,7 +13,7 @@ import { WindowsEvent } from '@/libs/window/types'
 
 
 
-export class SplashWindow extends WindowWrapper {
+export class SplashWindow extends MobiuszWindow {
 
   public static role = role
 
@@ -27,15 +29,10 @@ export class SplashWindow extends WindowWrapper {
     // Creates menu
     menu.init()
 
-    // Listen to event and show window
-    this._win!.once(WindowsEvent.READY_TO_SHOW, () => {
-      this._win!.show()
-    })
-
     // Listens fo full load of window
-    AppManager.on(WindowMessages.LOADED, this.onWindowLoaded)
+    this._win!.webContents.once(WindowsEvent.DOM_READY, this.onWindowLoaded)
     // Listens to splash window's 'done' event
-    AppManager.on(WindowMessages.DONE, this.onWindowDone)
+    AppManager.on(M.Window.DONE, this.onWindowDone)
 
   }
 
@@ -43,40 +40,64 @@ export class SplashWindow extends WindowWrapper {
     menu.unref()
   }
 
-  private onWindowLoaded(role: string) {
+  private onWindowLoaded(event: Event) {
 
     // Removes listener
-    AppManager.off(WindowMessages.LOADED, this.onWindowLoaded)
+    this._win!.webContents.off(M.Window.LOADED, this.onWindowLoaded)
+    // SHow the window
+    this._win!.show()
+    /*
+    // TODO: camera acess and all
+    const cameraAccess = systemPreferences.getMediaAccessStatus('camera')
+    const microphoneAccess = systemPreferences.getMediaAccessStatus('microphone')
+    const screenAccess = systemPreferences.getMediaAccessStatus('screen')
+    console.log(cameraAccess)
+    console.log(microphoneAccess)
+    console.log(screenAccess)
+
+    // FIXME: Don't do this in VS terminal
+    // see: https://github.com/electron/electron/issues/20498#issuecomment-540988674
+    // may be a fix: https://github.com/microsoft/vscode/issues/95062#issuecomment-751241372
+    // https://apple.stackexchange.com/questions/339363/how-can-i-remove-applications-from-security-privacy
+    systemPreferences.askForMediaAccess('camera')
+      .then((granted: boolean) => {
+        // TODO: granted
+        return systemPreferences.askForMediaAccess('microphone')
+      }).then((granted: boolean) => {
+        // TODO: granted
+      }).catch(err => {
+        console.error(err)
+      })
+    */
 
     /*
      * Begins synchronous tasks for the splash window
      */
     // Listens to the Updater 'error' and 'done' events
-    AppManager.on(SocketMessages.UPDATER_DONE, this.onUpdaterDone)
-    AppManager.on(SocketMessages.UPDATER_ERROR, this.onUpdaterError)
+    AppManager.on(M.Updater.DONE, this.onUpdaterDone)
+    AppManager.on(M.Updater.ERROR, this.onUpdaterError)
     // Initialize the Updater module.
     Updater.init()
     // Checks for updates
     Updater.run()
-    // Asks for devices.
-    AppManager.emit(SocketMessages.GET_RTC_DEVICES)
 
   }
 
   private onUpdaterDone(err: Error) {
     Updater.unref()
-    AppManager.off(SocketMessages.UPDATER_DONE, this.onUpdaterDone)
+    AppManager.off(M.Updater.DONE, this.onUpdaterDone)
   }
 
   private onUpdaterError(err: Error) {
     Updater.unref()
-    AppManager.off(SocketMessages.UPDATER_ERROR, this.onUpdaterError)
+    AppManager.off(M.Updater.ERROR, this.onUpdaterError)
   }
 
   private onWindowDone() {
     // Asks listeners (window module) to create the main window.
+    // TODO: remove time out
     setTimeout(() => {
-      AppManager.emit(WindowMessages.CREATE, 'core.main')
+      AppManager.emit(M.Window.CREATE, 'core.main')
       this.hide()
       this.destroy()
     }, 3000)

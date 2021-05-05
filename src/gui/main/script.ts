@@ -16,7 +16,7 @@ class MobiuszVueComponent extends Vue {
 export default class App extends MobiuszVueComponent {
 
   public mounted(): void {
-    // Loads route returned by core's WindowWrapper instance.
+    // Loads route returned by core's MobiuszWindow instance.
     if (this.$route.query && this.$route.query.page) {
       this.$router.push({ name: (this.$route.query.page as string) })
     }

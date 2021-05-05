@@ -1,7 +1,7 @@
-import { MobiuszDevice } from "@/libs/signal/devices";
+import { MobiuszDevice } from "@/libs/signal/main/devices";
 import { MobiuszOSCHandler } from "../handler";
 
-import { Device } from "@/libs/signal/devices/types";
+import { Device } from "@/libs/signal/main/devices/types";
 import { OSC } from '../messages'
 
 import osc from 'osc'

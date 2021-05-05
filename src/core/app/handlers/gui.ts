@@ -1,5 +1,5 @@
-import { SocketMessages, WindowMessages } from '@/shared'
 import { MobiuszStore } from '@/libs/store'
+import{ Store } from '@/libs/store/shared'
 import { AppManager } from '@/core/app/manager'
 
 
@@ -13,19 +13,19 @@ const STORE = new MobiuszStore('io.benoitlahoz.mmmap.preferences')
 
 const init = () => {
 
-  AppManager.on(SocketMessages.GET_STORE, onGetStore)
-  AppManager.on(SocketMessages.SET_STORE, onSetStore)
-  AppManager.on(SocketMessages.GET_STORE_ENTRY, onGetStoreEntry)
-  AppManager.on(SocketMessages.SET_STORE_ENTRY, onSetStoreEntry)
+  AppManager.on(Store.Event.GET, onGetStore)
+  AppManager.on(Store.Event.SET, onSetStore)
+  AppManager.on(Store.Event.GET_ENTRY, onGetStoreEntry)
+  AppManager.on(Store.Event.SET_ENTRY, onSetStoreEntry)
 
 }
 
 const unref = () => {
   
-  AppManager.off(SocketMessages.GET_STORE, onGetStore)
-  AppManager.off(SocketMessages.SET_STORE, onSetStore)
-  AppManager.off(SocketMessages.GET_STORE_ENTRY, onGetStoreEntry)
-  AppManager.off(SocketMessages.SET_STORE_ENTRY, onSetStoreEntry)
+  AppManager.off(Store.Event.GET, onGetStore)
+  AppManager.off(Store.Event.SET, onSetStore)
+  AppManager.off(Store.Event.GET_ENTRY, onGetStoreEntry)
+  AppManager.off(Store.Event.SET_ENTRY, onSetStoreEntry)
 
 }
 

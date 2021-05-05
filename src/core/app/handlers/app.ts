@@ -3,9 +3,9 @@ import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 
 import { App } from '../types'
-import { WindowMessages } from '@/shared'
+import { M } from '@/shared'
 
-import powerSaver from '../power'
+import powerSaver from '@/core/app/power'
 import { AppManager } from '@/core/app/manager'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
@@ -68,7 +68,7 @@ const onReady = async () => {
   }
 
   // Asks listeners (window module) to create the splash window.
-  AppManager.emit(WindowMessages.CREATE, 'core.splash')
+  AppManager.emit(M.Window.CREATE, 'core.splash')
 
 }
 

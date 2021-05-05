@@ -1,6 +1,6 @@
 import { Component, Vue } from 'vue-property-decorator'
 
-import { SocketMessages, WindowMessages } from '@/shared'
+import { M } from '@/shared'
 
 import { VuozTitleBar } from '@vuoz/components'
 
@@ -31,7 +31,7 @@ export default class SettingsPage extends Vue {
     // Window is fully loaded
     window.removeEventListener('load', this.onLoaded)
     // Sends message to main process
-    this.$app.send(WindowMessages.LOADED, this.$route.name)
+    this.$app.send(M.Window.LOADED, this.$route.name)
   }
 
 }

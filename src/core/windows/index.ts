@@ -4,9 +4,9 @@
 
 import { AppManager } from "@/core/app/manager"
 
-import { SocketMessages, WindowMessages } from "@/shared"
+import { M } from "@/shared"
 
-import { WindowWrapper } from "@/libs/window"
+import { MobiuszWindow } from "@/libs/window"
 
 // Default windows
 import { SplashWindow } from './splash'
@@ -20,7 +20,7 @@ import { ThemeManager } from "@/libs/theme"
  * Default windows for the application.
  * @constant
  */
-const WINDOWS: { [key: string]: { klass: typeof WindowWrapper, window: WindowWrapper | null } } = {
+const WINDOWS: { [key: string]: { klass: typeof MobiuszWindow, window: MobiuszWindow | null } } = {
   // Defines default windows.
   [SplashWindow.role]: { klass: SplashWindow, window: null },
   [MainWindow.role]: { klass: MainWindow, window: null },
@@ -43,7 +43,7 @@ const init = async () => {
   themeManager = new ThemeManager()
 
   // Adds listeners to AppManager.
-  AppManager.on(WindowMessages.CREATE, createWindow)
+  AppManager.on(M.Window.CREATE, createWindow)
 
 }
 
@@ -53,7 +53,7 @@ const unref = () => {
   themeManager.unref()
 
   // Removes listeners to AppManager
-  AppManager.off(WindowMessages.CREATE, createWindow)
+  AppManager.off(M.Window.CREATE, createWindow)
 
   // Unref windows
   for (const key in WINDOWS) {

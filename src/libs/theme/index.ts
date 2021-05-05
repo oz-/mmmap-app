@@ -2,7 +2,7 @@ import path from 'path'
 import fs from 'fs'
 
 import { AppManager } from '@/core/app/manager'
-import { SocketMessages } from '@/shared'
+import { M } from '@/shared'
 
 // Default theme
 import { Theme } from '@vuoz/theme-core-default'
@@ -45,16 +45,16 @@ export class ThemeManager {
     this.cssThemeWithId = this.cssThemeWithId.bind(this)
     this.sassThemeWithId = this.sassThemeWithId.bind(this)
 
-    AppManager.on(SocketMessages.GET_THEMES, this.allThemes)
-    AppManager.on(SocketMessages.GET_THEME_CSS, this.cssThemeWithId)
-    AppManager.on(SocketMessages.GET_THEME_SASS, this.sassThemeWithId)
+    AppManager.on(M.Theme.GET, this.allThemes)
+    AppManager.on(M.Theme.GET_CSS, this.cssThemeWithId)
+    AppManager.on(M.Theme.GET_SASS, this.sassThemeWithId)
   }
 
   public unref() {
 
-    AppManager.off(SocketMessages.GET_THEMES, this.allThemes)
-    AppManager.off(SocketMessages.GET_THEME_CSS, this.cssThemeWithId)
-    AppManager.off(SocketMessages.GET_THEME_SASS, this.sassThemeWithId)
+    AppManager.off(M.Theme.GET, this.allThemes)
+    AppManager.off(M.Theme.GET_CSS, this.cssThemeWithId)
+    AppManager.off(M.Theme.GET_SASS, this.sassThemeWithId)
 
     this._themes = []
     this._themes = null

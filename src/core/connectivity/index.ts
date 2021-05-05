@@ -1,6 +1,6 @@
 // see here for asarUnpack package.json option: https://threads.js.org/getting-started
 import { spawn, Thread, Worker } from "threads"
-import { WorkerMessages } from '@/shared'
+import { M } from '@/shared'
 import { AppManager } from "@/core/app/manager"
 
 
@@ -11,7 +11,7 @@ let thread: any
 
 const init = async () => {
 
-  AppManager.on(WorkerMessages.MESSAGE, (value: any) => {
+  AppManager.on(M.Worker.MESSAGE, (value: any) => {
     console.log('MEssage received!', value)
   })
   thread = await spawn(new Worker('./worker.ts'))

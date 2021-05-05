@@ -1,5 +1,5 @@
-import { MobiuszDeviceHandler } from "@/libs/signal/devices";
-import { Device } from "../../devices/types";
+import { MobiuszDeviceHandler } from "@/libs/signal/main/devices";
+import { Device } from "../../main/devices/types";
 
 import { AppManager } from '@/core/app/manager'
 
@@ -33,8 +33,9 @@ export class MobiuszSerialHandler extends MobiuszDeviceHandler {
       ports.forEach(function (port) {
         self._ports.push(port)
       })
+    }).catch(err => {
+      console.error(err)
     })
-
   }
 
   public addDevice(type: Device.Type, description: Device.Description) {

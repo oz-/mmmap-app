@@ -5,6 +5,7 @@
 const path = require('path')
 const ThreadsPlugin = require('threads-plugin')
 const { isConstructSignatureDeclaration } = require('typescript')
+const nodeExternals = require('webpack-node-externals');
 
 const security = require('./security')
 
@@ -26,6 +27,7 @@ module.exports = {
       ],
       afterSign: './config/notarizing.js',
       mac: {
+        category: "public.app-category.social-networking",
         // Zip file is mandatory for autoupdates
         target: ['dmg', 'zip'],
         // @see: https://medium.com/@TwitterArchiveEraser/notarize-electron-apps-7a5f988406db
@@ -62,7 +64,7 @@ module.exports = {
     chainWebpackMainProcess: config => {
 
       // Set externals (not bundled with app)
-      // FIXME: Can't remember why this is for.
+      // TODO: Why not putting everything in global externals, at the end of the file?
       config.externals({
         ...config.get('externals'),
         'bufferutil': 'commonjs bufferutil',
@@ -87,9 +89,8 @@ module.exports = {
     },
     // Bridge between engine and GUI for the first handshake via Electron's Ipc modules
     preload: 'src/core/ipc/preload/index.ts',
-    // TODO: see: https://github.com/nklayman/vue-cli-plugin-electron-builder/issues/1295
-    // also: https://stackoverflow.com/a/59313474/1060921
+    // Don't bundle native modules.
     externals: ['serialport', 'midi'],
-    nodeModulesPath: ['../../node_modules', './node_modules']
+    nodeModulesPath: ['../node_modules', './node_modules']
   }
 }

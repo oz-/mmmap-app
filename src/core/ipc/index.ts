@@ -5,30 +5,30 @@
 import { ipcMain } from 'electron'
 import getPort from 'get-port'
 
-import { IpcMessages } from '@/shared'
+import { M } from '@/shared'
 import socket from './socket'
-import { SocketServer } from '@/libs/socket'
+import { IpcSocketServer } from '@/libs/ipcsocket'
 
 const MODULE_NAME = 'Ipc'
 
 /**
- * A port on localhost to which the main SocketServer is listening.
- * @see SocketServer
- * @see SocketClient
+ * A port on localhost to which the main IpcSocketServer is listening.
+ * @see IpcSocketServer
+ * @see IpcSocketClient
  * 
  * @memberof module:Ipc
  * @category Main
  */
 let port = -1
 /**
- * A SocketServer object listening for windows connection.
- * @see SocketServer
- * @see SocketClient
+ * A IpcSocketServer object listening for windows connection.
+ * @see IpcSocketServer
+ * @see IpcSocketClient
  * 
  * @memberof module:Ipc
  * @category Main
  */
-let server: SocketServer | null = null
+let server: IpcSocketServer | null = null
 
 /**
  * Manages first handshake between windows and the main process via 
@@ -44,10 +44,10 @@ let server: SocketServer | null = null
  */
 
 /**
- * Gets an available port on localhost to create a SocketServer and listens 
+ * Gets an available port on localhost to create a IpcSocketServer and listens 
  * to windows asking (via IpcMain) for the port, in order to connect to socket server.
  * 
- * @see SocketServer
+ * @see IpcSocketServer
  */
 const init = async () => {
 
@@ -55,9 +55,9 @@ const init = async () => {
   port = await getPort()
 
   // TODO: counterpart to remove handler on quit
-  ipcMain.handle(IpcMessages.GET_SOCKET_PORT, sendPort)
+  ipcMain.handle(M.Ipc.GET_IPC_PORT, sendPort)
 
-  // Creates a SocketServer for windows to connect to.
+  // Creates a IpcSocketServer for windows to connect to.
   server = await socket.create(port)
 
 }
@@ -72,16 +72,16 @@ const unref = () => {
   port = -1
 
   // Removes IpcMain handler
-  ipcMain.removeHandler(IpcMessages.GET_SOCKET_PORT)
+  ipcMain.removeHandler(M.Ipc.GET_IPC_PORT)
 
 }
 
 /**
- * Callback: Sends the port number on which the SocketServer is listening to window 
+ * Callback: Sends the port number on which the IpcSocketServer is listening to window 
  * asking for it via IpcMain Electron's module.
  * 
  * @callback sendPort
- * @return { number } The port on which the SocketServer is listening.
+ * @return { number } The port on which the IpcSocketServer is listening.
  */
 const sendPort = () => {
     // Renderer process asks for the port to connect to

@@ -1,5 +1,5 @@
 import { AppManager } from '@/core/app/manager'
-import { WindowMessages } from '@/shared'
+import { M } from '@/shared'
 import { app, Menu, MenuItem } from 'electron'
 
 let menu: Menu | null
@@ -18,7 +18,7 @@ const init = () => {
           label: 'Preferences',
           click() {
             // TODO: Pass parent to 'init' method.
-            AppManager.emit(WindowMessages.CREATE, 'core.settings')
+            AppManager.emit(M.Window.CREATE, 'core.settings')
           }
         },
         { type: 'separator' },
@@ -60,7 +60,7 @@ const init = () => {
           accelerator: 'Alt+CommandOrControl+S',
           click() {
             // TODO: Pass parent to 'init' method.
-            AppManager.emit(WindowMessages.CREATE, 'core.signals')
+            AppManager.emit(M.Window.CREATE, 'core.signals')
           }
         },
         { type: 'separator' },

@@ -7,8 +7,8 @@ import VueMeta from 'vue-meta'
 import App from './main/index.vue'
 
 // Interprocess communication.
-import { IpcMessages, SocketMessages } from '../shared'
-import { SocketClient } from '../libs/socket'
+import { M } from '../shared'
+import { IpcSocket, IpcSocketClient } from '../libs/ipcsocket'
 
 // Imports default theme.
 import '@vuoz/theme-core-default/dist/css/theme.min.css'
@@ -16,6 +16,14 @@ import '@vuoz/theme-core-default/dist/css/theme.min.css'
 // VueRouter and Vuex
 import router from './router'
 import store from './store'
+
+/**
+ * Configure store.
+ */
+// TODO: 'plugin' based
+// see: https://forum.vuejs.org/t/creating-re-usable-vuex-store-with-store-registermodule/33754
+import { ApplicationStore, initIpcPlugin, initSharedStorePlugin, initServerPlugin, initTabsPlugin } from '@/core/windows/main/store'
+import { SignalStore, initDevicesPlugin } from '@/libs/signal/vue'
 
 /**
  * The main entry point for the application's GUI.
@@ -28,10 +36,10 @@ Vue.config.productionTip = false
 Vue.use(VueMeta)
 
 /**
- * SocketClient object to handle communication with the main process.
+ * IpcSocketClient object to handle communication with the main process.
  * @memberof module:GUI
  */
-let socket: SocketClient | null
+let socket: IpcSocketClient | null
 
 /**
  * Electron's IpcRenderer methods exposed by the 'preload.js' file.
@@ -39,65 +47,50 @@ let socket: SocketClient | null
  */
 const main = (window as { [key: string]: any })['app']
 
-// Ask for the main process' WebSocket port
-main.ipc.invoke(IpcMessages.GET_SOCKET_PORT)
+// Ask for the main process' WebIpcSocket port
+main.ipc.invoke(M.Ipc.GET_IPC_PORT)
   .then((port: number) => {
 
-    // Creates a SocketClient object to handle IPC in place of Electron's IPC module
-    socket = new SocketClient(port, SocketMessages)
-
-    // Lets client use the WebSocket client from her components
+    // Creates a IpcSocketClient object to handle IPC in place of Electron's IPC module
+    socket = new IpcSocketClient(port)
+    // Lets client use the WebIpcSocket client from her components
     Vue.prototype.$app = {
       on: socket.on.bind(socket),
       off: socket.off.bind(socket),
       send: socket.send.bind(socket)
     }
 
-    // Creates app
-    new Vue({
-      router,
-      store,
-      render: h => h(App),
-      created() {
-        onConnect = onConnect.bind(this)
-        Vue.prototype.$app.on(SocketMessages.CONNECTED, onConnect)
-      },
-      beforeDestroy() {
+    // TODO: see https://jsgv.io/blog/sharing-vuex-state-across-electron-browser-windows/
+    // for sharing store between windows.
 
-        Vue.prototype.$app.off(SocketMessages.CONNECTED, onConnect)
-        // Tears down the app
-        Vue.prototype.$app = null
-        socket!.unref()
-        socket = null
+    // Register store modules
+    store.registerModule(ApplicationStore.name, ApplicationStore)
+    store.registerModule(SignalStore.name, SignalStore)
+    // Initialize store plugins
+    initIpcPlugin(store)
+    initSharedStorePlugin(store)
+    initServerPlugin(store)
+    initTabsPlugin(store)
+    initDevicesPlugin(store)
 
-      }
-    }).$mount('#app')
+    // Wait for connection to create app
+    Vue.prototype.$app.on(IpcSocket.Client.Event.CONNECTED, () => {
+      // Creates app
+      new Vue({
+        router,
+        store,
+        render: h => h(App),
+        beforeDestroy() {
+
+          // Tears down the app
+          Vue.prototype.$app = null
+          socket!.unref()
+          socket = null
+
+        }
+      }).$mount('#app')
+    })
 
   }).catch((err: Error) => {
     console.error(err)
   })
-
-let onConnect = () => {
-
-  // Gets theme from main process.
-  console.warn('TODO: get theme used by the client in the application.')
-  setThemePath = setThemePath.bind(Vue)
-  Vue.prototype.$app.send(SocketMessages.GET_THEMES, null, setThemePath)
-}
-
-/**
- * Callback executed with the answer of the main process to the GET_THEME message.
- * @param payload { object } The objet returned by the call to main process.
- * @callback
- * @memberof module:GUI
- */
-let setThemePath = async (event: any) => {
-
-  // TODO: keep in Vuex Store
-  Vue.prototype.$app.off(setThemePath)
-  // TODO
-  // const theme = event.payload.find((t: any) => t.id === 'core.default')
-  // const htmlElement = document.documentElement
-  // htmlElement.setAttribute('theme', theme.id)
-
-}

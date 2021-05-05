@@ -11,10 +11,11 @@ import { WindowsEvent } from './types'
  * @category Libs
  * @subcategory Window
  */
-export class WindowWrapper {
+export class MobiuszWindow {
   /**
    * The URL to be loaded by the window.
    */
+  // TODO: get protocol from env file
   private static url: string = process.env.WEBPACK_DEV_SERVER_URL ? `${(process.env.WEBPACK_DEV_SERVER_URL as string)}/#/?page=` : 'app://./index.html/#/?page='
   /**
    * The role of the window, with this signature: ```[moduleName]:[windowRole]``` 
@@ -86,7 +87,7 @@ export class WindowWrapper {
    */
   public async load() {
 
-    const url = `${WindowWrapper.url}${this.constructor['role']}`
+    const url = `${MobiuszWindow.url}${this.constructor['role']}`
 
     if (!url || url.trim() === '') {
       const err = new Error('url is undefined.')

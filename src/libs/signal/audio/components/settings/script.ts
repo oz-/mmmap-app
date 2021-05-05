@@ -1,7 +1,5 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 
-import { SocketMessages, WindowMessages } from '@/shared'
-
 import { VuozPreferencesPanel, VuozTabs } from '@vuoz/components'
 import { VuozPreferencesAudioInputTab, VuozPreferencesAudioOutputTab } from './tabs'
 

@@ -1,13 +1,13 @@
 import { AppManager } from '@/core/app/manager'
-import { WindowWrapper } from '@/libs/window'
-import { SocketMessages, WindowMessages } from '@/shared'
+import { MobiuszWindow } from '@/libs/window'
+import { M } from '@/shared'
 
 import options from './config'
 import { role } from './role'
 
 
 
-export class SignalsWindow extends WindowWrapper {
+export class SignalsWindow extends MobiuszWindow {
 
   public static role = role
 
@@ -16,7 +16,7 @@ export class SignalsWindow extends WindowWrapper {
 
     // Listens fo full load of window
     this.onWindowLoaded = this.onWindowLoaded.bind(this)
-    AppManager.on(WindowMessages.LOADED, this.onWindowLoaded)
+    AppManager.on(M.Window.LOADED, this.onWindowLoaded)
 
   }
 
@@ -27,7 +27,7 @@ export class SignalsWindow extends WindowWrapper {
   private onWindowLoaded(role: string) {
 
     // Removes listener
-    AppManager.off(WindowMessages.LOADED, this.onWindowLoaded)
+    AppManager.off(M.Window.LOADED, this.onWindowLoaded)
     // Shows the window
     this._win!.show()
 

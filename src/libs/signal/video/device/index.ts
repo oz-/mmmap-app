@@ -1,5 +1,5 @@
-import { MobiuszDevice } from "@/libs/signal/devices";
-import { Device } from "@/libs/signal/devices/types";
+import { MobiuszDevice } from "@/libs/signal/main/devices";
+import { Device } from "@/libs/signal/main/devices/types";
 import { MobiuszVideoHandler } from "../handler";
 
 

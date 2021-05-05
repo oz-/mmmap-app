@@ -1,5 +1,5 @@
-import { MobiuszDeviceHandler } from "@/libs/signal/devices";
-import { Device } from "../../devices/types";
+import { MobiuszDeviceHandler } from "@/libs/signal/main/devices";
+import { Device } from "../../main/devices/types";
 
 import { AppManager } from '@/core/app/manager'
 

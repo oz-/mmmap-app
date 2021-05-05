@@ -21,6 +21,7 @@ export class MobiuszStore {
   }
 
   public set(object: any) {
+    console.log('IN SET')
     this._store!.set(object)
   }
 

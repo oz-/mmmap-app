@@ -1,6 +1,6 @@
 import { Component, Vue } from 'vue-property-decorator'
 
-import { SocketMessages, WindowMessages } from '@/shared'
+import { M } from '@/shared'
 
 import { VuozTitleBar, VuozTable, VuozTableRow, VuozPreferencesItem } from '@vuoz/components'
 import { VueConstructor } from 'vue/types/umd'
@@ -54,7 +54,7 @@ export default class SignalsPage extends Vue {
     // Window is fully loaded
     window.removeEventListener('load', this.onLoaded)
     // Asks for devices
-    this.$app.send(SocketMessages.GET_DEVICES, 'all', (devices: any) => {
+    this.$app.send(M.Signal.GET_DEVICES, 'all', (devices: any) => {
       // Organize by signal category (audio, video, ...)
       devices.payload.forEach((device: any) => {
         // Object for tab description
@@ -70,8 +70,12 @@ export default class SignalsPage extends Vue {
         }
         this.rows.push(description)
       })
+      // FIXME: Ugly hack (should modify VuozTable and VuozTableRox instead)
+      this.$nextTick(() => {
+        this.onSelect({ row: 0, item: { name: 'category.audio' } })
+      })
       // Sends message to main process
-      this.$app.send(WindowMessages.LOADED, this.$route.name)
+      this.$app.send(M.Window.LOADED, this.$route.name)
     })
   }
 

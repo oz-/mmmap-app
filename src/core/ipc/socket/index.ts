@@ -3,16 +3,14 @@
  */
 
 import { AppManager } from '@/core/app/manager'
-import { SocketServer } from '@/libs/socket'
+import { IpcSocket, IpcSocketServer } from '@/libs/ipcsocket'
 
-import { SocketMessages } from '@/shared'
-
-let server: SocketServer | null = null
+let server: IpcSocketServer | null = null
 
 const create = async (port: number) => {
 
-  server = new SocketServer(port, SocketMessages)
-  server.on(SocketMessages.CONNECTION, socket => {
+  server = new IpcSocketServer(port)
+  server.on(IpcSocket.Server.Event.CONNECTION, socket => {
 
     // Listens to every event sent by this socket
     // and proxies to AppManager.
@@ -31,6 +29,7 @@ const create = async (port: number) => {
   })
 
   return server
+  
 }
 
 const unref = () => {

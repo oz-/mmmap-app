@@ -1,5 +1,5 @@
 import { app } from 'electron'
-import { SocketMessages } from '@/shared'
+import { M } from '@/shared'
 import { autoUpdater } from 'electron-updater'
 import { AppManager } from '@/core/app/manager'
 import { UpdaterError } from '../errors'
@@ -37,11 +37,11 @@ const run = () => {
 const onError = (err: Error) => {
   const error = new UpdaterError(err.message)
   console.error(error)
-  AppManager.emit(SocketMessages.UPDATER_ERROR, error)
+  AppManager.emit(M.Updater.ERROR, error)
 }
 
 const onChecking = () => {
-  AppManager.emit(SocketMessages.UPDATER_CHECKING)
+  AppManager.emit(M.Updater.CHECKING)
 }
 
 const onAvailable = (payload: any) => {
@@ -51,7 +51,7 @@ const onAvailable = (payload: any) => {
       version: app.getVersion()
     }
   }
-  AppManager.emit(SocketMessages.UPDATER_AVAILABLE, data)
+  AppManager.emit(M.Updater.AVAILABLE, data)
 }
 
 const onNotAvailable = (payload: any) => {
@@ -61,17 +61,17 @@ const onNotAvailable = (payload: any) => {
       version: app.getVersion()
     }
   }
-  AppManager.emit(SocketMessages.UPDATER_UNAVAILABLE, data)
-  AppManager.emit(SocketMessages.UPDATER_DONE)
+  AppManager.emit(M.Updater.UNAVAILABLE, data)
+  AppManager.emit(M.Updater.DONE)
 }
 
 const onProgress = (payload: any) => {
-  AppManager.emit(SocketMessages.UPDATER_DOWNLOAD, payload)
+  AppManager.emit(M.Updater.DOWNLOAD, payload)
 }
 
 const onDownloaded = (payload: any) => {
-  AppManager.emit(SocketMessages.UPDATER_DOWNLOADED, payload)
-  AppManager.emit(SocketMessages.UPDATER_DONE)
+  AppManager.emit(M.Updater.DOWNLOADED, payload)
+  AppManager.emit(M.Updater.DONE)
 }
 
 

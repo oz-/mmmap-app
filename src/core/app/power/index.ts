@@ -4,7 +4,7 @@
 
 import { powerMonitor, powerSaveBlocker } from 'electron'
 
-import { App } from '../types'
+import { App } from '@/core/app/types'
 
 let powerId = -1
 
