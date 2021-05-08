@@ -10,12 +10,13 @@ import adapter from 'webrtc-adapter'
 
 export const initDevicesPlugin = (store: Store<any>) => {
 
-  const ipc = Vue.prototype.$app
-  // Gets devices from renderer process when connected
-  ipc.on(IpcSocket.Client.Event.CONNECTED, () => {
+  const app = Vue.prototype.$app
+  // Gets media devices from renderer process when connected
+  app.on(IpcSocket.Client.Event.CONNECTED, () => {
     enumerateDevices()
     .then(devices => {
-      ipc.send(Signal.Event.GUI.PARSE_DEVICES, devices)
+      // Asks main process toregister the devices
+      app.send(Signal.Event.Devices.REGISTER, devices)
     }).catch(err => {
       console.error(err)
     })

@@ -48,6 +48,7 @@ export const M = {
     },
     Auth: {
       GET_LOCAL_TOKEN:                                        'auth:local:token:get',
+      SET_LOCAL_TOKEN:                                        'auth:local:token:set',
       // Messages to server
       CHECK_TOKEN:                                            'db:user.check.token',
       SIGN_IN:                                                'db:user.sign.in', // TODO: for testing

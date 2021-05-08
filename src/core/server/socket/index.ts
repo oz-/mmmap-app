@@ -8,12 +8,14 @@ import { AppManager } from "@/core/app/manager"
 import { M } from '@/shared'
 
 import Listeners from './listeners'
-import socket from '@/core/ipc/socket'
+
+// TODO: chose server in avilable ones
+import getServer from '../get'
+const server = getServer()[0]
 
 
 
-
-let SOCKET: SocketIOClient.Socket | null = null
+let SOCKET: any | null = null
 
 
 const init = () => {
@@ -37,8 +39,8 @@ export default {
 const connect = () => {
 
   if (!SOCKET || !SOCKET.connected) {
-
-    SOCKET = io(`${process.env.MMMAP_ROOT_SERVER!}`, { // TODO: check when to connect to /app
+    console.log(server)
+    SOCKET = io(`${server}`, { // TODO: check when to connect to /app
       reconnection: true,
       secure: true,
       // Node.js option only.

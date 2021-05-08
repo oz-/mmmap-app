@@ -6,6 +6,7 @@ import { M } from '@/shared'
 import { VuozImage, VuozConsole, VuozSignIn } from '@vuoz/components'
 // TODO: pass it in @vuoz/components
 import { VuozRTCDevicesMixin } from '@/libs/signal/vue'
+import { UserMutationTypes } from '@/libs/user/vue/store/mutations'
 
 /**
  * Splash window content.
@@ -41,6 +42,10 @@ export default class SplashPage extends Mixins(Vue, VuozRTCDevicesMixin) {
   private logger: any
   // Show sign-in component
   private login = false
+  private message = 'Please enter your credentials.'
+  private color = 'white'
+  // Vuex
+  // private setMe!: (value: any) => any;
 
   // TODO: In production, when cache was cleared (first launch) application is stalling and ws disconnected until a second launch.
 
@@ -183,8 +188,7 @@ export default class SplashPage extends Mixins(Vue, VuozRTCDevicesMixin) {
       if (accounts.payload.length === 0) {
         const timeout = setTimeout(() => {
           clearTimeout(timeout)
-          // this.login = true
-          this.$app.send(M.Window.DONE)
+          this.login = true
         }, 2000)
       } else {
         let treated = 0
@@ -212,7 +216,7 @@ export default class SplashPage extends Mixins(Vue, VuozRTCDevicesMixin) {
                 // Tears down the Splash window.
                 this.removeListeners()
                 // Calls next step
-                // this.$app.send(M.Window.DONE)
+                this.$app.send(M.Window.DONE)
                 return
               }
             }
@@ -266,6 +270,41 @@ export default class SplashPage extends Mixins(Vue, VuozRTCDevicesMixin) {
   private onSignIn(credentials: any) {
     this.$app.send(M.Server.Auth.SIGN_IN, credentials, (result: any) => {
       console.log('From server', result)
+      const payload = result.payload
+      switch (payload.type) {
+        case 'error': {
+          this.message = payload.message;
+          this.color = 'danger';
+          (this.$refs.form as any).reset();
+          break
+        }
+        case 'success': {
+          this.message = ''
+          this.color = 'white'
+          this.login = false
+          this.$nextTick(() => {
+            this.$store.commit(`user/${UserMutationTypes.ME}`, payload.message)
+            this.logger.push({
+              date: new Date(),
+              content: `Welcome ${payload.message.firstname} ${payload.message.lastname}.`
+            })
+            this.$app.send(M.Server.Auth.SET_LOCAL_TOKEN, {
+              email: payload.message.email,
+              token: payload.message.token
+            }, (record: any) => {
+              const recordP = record.payload
+              this.logger.push({
+                date: new Date(),
+                content: recordP.message
+              })
+              const timeout = setTimeout(() => {
+                clearTimeout(timeout)
+                this.$app.send(M.Window.DONE)
+              }, 2000)
+            })
+          })
+        }
+      }
     })
   }
 

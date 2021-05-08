@@ -20,6 +20,7 @@ const SERVICES = {
 
 const init = async () => {
 
+  AppManager.on(M.Server.Auth.SET_LOCAL_TOKEN, setLocalToken)
   AppManager.on(M.Server.Auth.GET_LOCAL_TOKEN, getLocalToken)
   // Promise
   /*
@@ -35,7 +36,23 @@ const init = async () => {
 const unref = () => {
 
   AppManager.off(M.Server.Auth.GET_LOCAL_TOKEN, getLocalToken)
+  AppManager.off(M.Server.Auth.SET_LOCAL_TOKEN, setLocalToken)
 
+}
+
+const setLocalToken = (data: any, callback: any) => {
+  try {
+    keytar.setPassword(SERVICES.token, data.email, data.token)
+    callback({
+      type: 'success',
+      message: 'Identifier was successfully recorded.'
+    })
+  } catch (err) {
+    callback({
+      type: 'error',
+      message: err.message
+    })
+  }
 }
 
 const getLocalToken = (data = null, callback: any) => {

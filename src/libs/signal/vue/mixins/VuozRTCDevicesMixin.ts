@@ -10,4 +10,39 @@ export class VuozRTCDevicesMixin extends Vue {
     return devices
   }
 
+  public async openAudioInput(id: string, constraints: any) {
+    try {
+      const media = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          deviceId: {
+            exact: id
+          },
+          ...constraints
+        }
+      })
+      return media
+    } catch(err) {
+      console.log(err)
+      return null
+    }
+  }
+
+  public async openVideoInput(id: string, constraints: any) {
+    try {
+      console.log(navigator.mediaDevices.getSupportedConstraints())
+      const media = await navigator.mediaDevices.getUserMedia({
+        video: {
+          deviceId: {
+            exact: id
+          },
+          ...constraints
+        }
+      })
+      return media
+    } catch(err) {
+      console.log(err)
+      return null
+    }
+  }
+
 }

@@ -22,7 +22,7 @@ const init = () => {
   manager = new MobiuszSignalManager(AppManager)
 
   // Listens to Renderer loading WebRTC devices (once)
-  AppManager.on(Signal.Event.GUI.PARSE_DEVICES, onGUIDevices)
+  AppManager.on(Signal.Event.Devices.REGISTER, onGUIDevices)
 
   // Listens to any object (except Renderer process) asking for devices
   AppManager.on(M.Signal.GET_DEVICES, onAskDevicesObjects)
@@ -45,7 +45,7 @@ const unref = () => {
  */
 const onGUIDevices = (devices: Device.Description[]) => {
   // Stops listener.
-  AppManager.off(Signal.Event.GUI.PARSE_DEVICES, onGUIDevices)
+  AppManager.off(Signal.Event.Devices.REGISTER, onGUIDevices)
   // Adds devices to manager that will create appropriate handlers.
   manager.addDevices(devices)
 }

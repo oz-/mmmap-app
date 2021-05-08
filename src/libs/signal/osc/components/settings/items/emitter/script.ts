@@ -38,7 +38,6 @@ export default class VuozComponent extends Vue {
         break
       }
       case 'port': {
-        console.log(event)
         this.portNumber = event.value
         break
       }

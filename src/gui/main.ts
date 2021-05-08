@@ -4,6 +4,7 @@
 
 import Vue from 'vue'
 import VueMeta from 'vue-meta'
+import Audiovisual from 'vue-audio-visual'
 import App from './main/index.vue'
 
 // Interprocess communication.
@@ -24,6 +25,7 @@ import store from './store'
 // see: https://forum.vuejs.org/t/creating-re-usable-vuex-store-with-store-registermodule/33754
 import { ApplicationStore, initIpcPlugin, initSharedStorePlugin, initServerPlugin, initTabsPlugin } from '@/core/windows/main/store'
 import { SignalStore, initDevicesPlugin } from '@/libs/signal/vue'
+import { UserStore } from '@/libs/user/vue'
 
 /**
  * The main entry point for the application's GUI.
@@ -34,6 +36,7 @@ import { SignalStore, initDevicesPlugin } from '@/libs/signal/vue'
 Vue.config.productionTip = false
 
 Vue.use(VueMeta)
+Vue.use(Audiovisual)
 
 /**
  * IpcSocketClient object to handle communication with the main process.
@@ -65,6 +68,7 @@ main.ipc.invoke(M.Ipc.GET_IPC_PORT)
 
     // Register store modules
     store.registerModule(ApplicationStore.name, ApplicationStore)
+    store.registerModule(UserStore.name, UserStore)
     store.registerModule(SignalStore.name, SignalStore)
     // Initialize store plugins
     initIpcPlugin(store)
